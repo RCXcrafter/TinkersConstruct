@@ -26,22 +26,24 @@ import slimeknights.tconstruct.shared.block.SlimeType;
 import slimeknights.tconstruct.tools.modifiers.EmptyModifier;
 import slimeknights.tconstruct.tools.modifiers.ModifierLootModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.AutosmeltModifier;
-import slimeknights.tconstruct.tools.modifiers.ability.BlockTransformModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.BucketingModifier;
+import slimeknights.tconstruct.tools.modifiers.ability.ExchangingModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.GlowingModifier;
-import slimeknights.tconstruct.tools.modifiers.ability.HarvestAbilityModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.LuckModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.MeltingModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.ReachModifier;
-import slimeknights.tconstruct.tools.modifiers.ability.ShearsAbilityModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.SilkyModifier;
-import slimeknights.tconstruct.tools.modifiers.ability.SilkyShearsAbilityModifier;
-import slimeknights.tconstruct.tools.modifiers.ability.TwoHandedAbilityModifier;
 import slimeknights.tconstruct.tools.modifiers.ability.UnbreakableModifier;
 import slimeknights.tconstruct.tools.modifiers.effect.BleedingEffect;
 import slimeknights.tconstruct.tools.modifiers.effect.MagneticEffect;
 import slimeknights.tconstruct.tools.modifiers.free.OverslimeModifier;
+import slimeknights.tconstruct.tools.modifiers.free.ShinyModifier;
 import slimeknights.tconstruct.tools.modifiers.free.WorldboundModifier;
+import slimeknights.tconstruct.tools.modifiers.internal.BlockTransformModifier;
+import slimeknights.tconstruct.tools.modifiers.internal.HarvestAbilityModifier;
+import slimeknights.tconstruct.tools.modifiers.internal.ShearsAbilityModifier;
+import slimeknights.tconstruct.tools.modifiers.internal.SilkyShearsAbilityModifier;
+import slimeknights.tconstruct.tools.modifiers.internal.TwoHandedAbilityModifier;
 import slimeknights.tconstruct.tools.modifiers.shared.ExperiencedModifier;
 import slimeknights.tconstruct.tools.modifiers.shared.ExtraModifier;
 import slimeknights.tconstruct.tools.modifiers.shared.ExtraModifier.ExtraType;
@@ -86,6 +88,7 @@ import slimeknights.tconstruct.tools.modifiers.upgrades.ReinforcedModifier;
 import slimeknights.tconstruct.tools.modifiers.upgrades.ScaledTypeDamageModifier;
 import slimeknights.tconstruct.tools.modifiers.upgrades.SharpnessModifier;
 import slimeknights.tconstruct.tools.modifiers.upgrades.SoulboundModifier;
+import slimeknights.tconstruct.tools.modifiers.upgrades.SweepingEdgeModifier;
 import slimeknights.tconstruct.tools.recipe.ModifierRemovalRecipe;
 import slimeknights.tconstruct.tools.recipe.PlayerBeheadingRecipe;
 import slimeknights.tconstruct.tools.recipe.SnowGolemBeheadingRecipe;
@@ -141,6 +144,7 @@ public final class TinkerModifiers extends TinkerModule {
   // general effects
   public static final RegistryObject<ExperiencedModifier> experienced = MODIFIERS.register("experienced", ExperiencedModifier::new);
   public static final RegistryObject<MagneticModifier> magnetic = MODIFIERS.register("magnetic", MagneticModifier::new);
+  public static final RegistryObject<ShinyModifier> shiny = MODIFIERS.register("shiny", ShinyModifier::new);
 
   // speed
   public static final RegistryObject<HasteModifier> haste = MODIFIERS.register("haste", HasteModifier::new);
@@ -160,6 +164,7 @@ public final class TinkerModifiers extends TinkerModule {
   public static final RegistryObject<ScaledTypeDamageModifier> antiaquatic = MODIFIERS.register("antiaquatic", () -> new ScaledTypeDamageModifier(0xD58520, CreatureAttribute.WATER));
   public static final RegistryObject<CoolingModifier> cooling = MODIFIERS.register("cooling", CoolingModifier::new);
   public static final RegistryObject<SharpnessModifier> sharpness = MODIFIERS.register("sharpness", SharpnessModifier::new);
+  public static final RegistryObject<SweepingEdgeModifier> sweeping = MODIFIERS.register("sweeping_edge", SweepingEdgeModifier::new);
 
   // abilities
   public static final RegistryObject<LuckModifier> luck = MODIFIERS.register("luck", LuckModifier::new);
@@ -168,6 +173,7 @@ public final class TinkerModifiers extends TinkerModule {
   public static final RegistryObject<Modifier> expanded = MODIFIERS.register("expanded", () -> new Modifier(0xff9f50));
   public static final RegistryObject<ReachModifier> reach = MODIFIERS.register("reach", ReachModifier::new);
   public static final RegistryObject<UnbreakableModifier> unbreakable = MODIFIERS.register("unbreakable", UnbreakableModifier::new);
+  public static final RegistryObject<ExchangingModifier> exchanging = MODIFIERS.register("exchanging", ExchangingModifier::new);
 
   // fluid abilities
   public static final RegistryObject<MeltingModifier> melting = MODIFIERS.register("melting", MeltingModifier::new);
@@ -185,8 +191,8 @@ public final class TinkerModifiers extends TinkerModule {
   public static final RegistryObject<BlockTransformModifier> axeTransformHidden = MODIFIERS.register("axe_transform_hidden", () -> new BlockTransformModifier(0xab7a55, Integer.MIN_VALUE + 50, ToolType.AXE, SoundEvents.ITEM_AXE_STRIP, false));
   public static final RegistryObject<BlockTransformModifier> hoeTransformHidden = MODIFIERS.register("hoe_transform_hidden", () -> new BlockTransformModifier(0x633c1e, Integer.MIN_VALUE + 50, ToolType.HOE, SoundEvents.ITEM_HOE_TILL, true));
 
-  public static final RegistryObject<ShearsAbilityModifier> shears = MODIFIERS.register("shears", () -> new ShearsAbilityModifier(0xd8e3e1, Integer.MIN_VALUE + 50));
-  public static final RegistryObject<SilkyShearsAbilityModifier> silkyShears = MODIFIERS.register("silky_shears", () -> new SilkyShearsAbilityModifier(0xd8e3e1, Integer.MIN_VALUE + 50));
+  public static final RegistryObject<ShearsAbilityModifier> shears = MODIFIERS.register("shears", () -> new ShearsAbilityModifier(0xd8e3e1, Short.MIN_VALUE));
+  public static final RegistryObject<SilkyShearsAbilityModifier> silkyShears = MODIFIERS.register("silky_shears", () -> new SilkyShearsAbilityModifier(0xd8e3e1, Short.MIN_VALUE));
   public static final RegistryObject<HarvestAbilityModifier> harvest = MODIFIERS.register("harvest", () -> new HarvestAbilityModifier(0x3eed78, Integer.MIN_VALUE + 51));
   public static final RegistryObject<TwoHandedAbilityModifier> twoHanded = MODIFIERS.register("two_handed", TwoHandedAbilityModifier::new);
   
@@ -205,7 +211,7 @@ public final class TinkerModifiers extends TinkerModule {
   public static final RegistryObject<CultivatedModifier> cultivated = MODIFIERS.register("cultivated", CultivatedModifier::new);
   public static final RegistryObject<DamageSpeedTradeModifier> jagged = MODIFIERS.register("jagged", () -> new DamageSpeedTradeModifier(0x696969, 0.005f));
   public static final RegistryObject<DamageSpeedTradeModifier> stonebound = MODIFIERS.register("stonebound", () -> new DamageSpeedTradeModifier(0x999999, -0.005f));
-  public static final RegistryObject<LevelDamageModifier> fractured = MODIFIERS.register("fractured", () -> new LevelDamageModifier(0xede6bf, 0.5f));
+  public static final RegistryObject<LevelDamageModifier> fractured = MODIFIERS.register("fractured", () -> new LevelDamageModifier(0xE8E5D2, 0.5f));
   // traits - tier 1 nether
   public static final RegistryObject<NecroticModifier> necrotic = MODIFIERS.register("necrotic", NecroticModifier::new);
   // traits - tier 2
@@ -218,7 +224,7 @@ public final class TinkerModifiers extends TinkerModule {
   public static final RegistryObject<OvercastModifier> overcast = MODIFIERS.register("overcast", OvercastModifier::new);
   public static final RegistryObject<LaceratingModifier> lacerating = MODIFIERS.register("lacerating", LaceratingModifier::new);
   public static final RegistryObject<MaintainedModifier> wellMaintained = MODIFIERS.register("maintained", MaintainedModifier::new);
-  public static final RegistryObject<ExtraModifier> enhanced = MODIFIERS.register("enhanced", () -> new ExtraModifier(0xffdbcc, ExtraType.UPGRADE, ModifierSource.TRAIT));
+  public static final RegistryObject<ExtraModifier> enhanced = MODIFIERS.register("enhanced", () -> new ExtraModifier(0xF7CDBB, ExtraType.UPGRADE, ModifierSource.TRAIT));
   public static final RegistryObject<TastyModifier> tasty = MODIFIERS.register("tasty", TastyModifier::new);
   // traits - tier 3 nether
   public static final RegistryObject<LightweightModifier> lightweight = MODIFIERS.register("lightweight", LightweightModifier::new);

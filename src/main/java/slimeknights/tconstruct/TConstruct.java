@@ -13,6 +13,8 @@ import net.minecraftforge.event.RegistryEvent.MissingMappings;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -35,6 +37,7 @@ import slimeknights.tconstruct.library.MaterialRegistry;
 import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.network.TinkerNetwork;
+import slimeknights.tconstruct.plugin.crt.CRTHelper;
 import slimeknights.tconstruct.shared.TinkerClient;
 import slimeknights.tconstruct.shared.TinkerCommons;
 import slimeknights.tconstruct.shared.TinkerMaterials;
@@ -99,6 +102,9 @@ public class TConstruct {
     // init client logic
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> TinkerClient::onConstruct);
     MinecraftForge.EVENT_BUS.register(this);
+    if (ModList.get().isLoaded("crafttweaker")) {
+      MinecraftForge.EVENT_BUS.register(new CRTHelper());
+    }
   }
 
   @SubscribeEvent
@@ -173,11 +179,15 @@ public class TConstruct {
         case "axe_head_cast": return TinkerSmeltery.smallAxeHeadCast.get();
         case "axe_head_sand_cast": return TinkerSmeltery.smallAxeHeadCast.getSand();
         case "axe_head_red_sand_cast": return TinkerSmeltery.smallAxeHeadCast.getRedSand();
-        // kama head removed
-        case "kama_head": return TinkerToolParts.swordBlade.get();
-        case "kama_head_cast": return TinkerSmeltery.swordBladeCast.get();
-        case "kama_head_sand_cast": return TinkerSmeltery.swordBladeCast.getSand();
-        case "kama_head_red_sand_cast": return TinkerSmeltery.swordBladeCast.getRedSand();
+        // kama head removed, sword blade to small blade
+        case "kama_head": case "sword_blade":
+          return TinkerToolParts.smallBlade.get();
+        case "kama_head_cast": case "sword_blade_cast":
+          return TinkerSmeltery.smallBladeCast.get();
+        case "kama_head_sand_cast": case "sword_blade_sand_cast":
+          return TinkerSmeltery.smallBladeCast.getSand();
+        case "kama_head_red_sand_cast": case "sword_blade_red_sand_cast":
+          return TinkerSmeltery.smallBladeCast.getRedSand();
         // broadsword -> sword
         case "broad_sword": return TinkerTools.sword.get();
         //  reinforcement splitting

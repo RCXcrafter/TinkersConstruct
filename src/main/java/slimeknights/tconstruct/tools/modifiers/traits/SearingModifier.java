@@ -17,7 +17,7 @@ public class SearingModifier extends Modifier {
   private static final float BASELINE_TEMPERATURE = 0.75f;
 
   public SearingModifier() {
-    super(0x3f3f3f);
+    super(0x4F4A47);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class SearingModifier extends Modifier {
   }
 
   @Override
-  public int afterLivingHit(IModifierToolStack tool, int level, LivingEntity attacker, LivingEntity target, float damageDealt, boolean isCritical, boolean fullyCharged) {
+  public int afterLivingHit(IModifierToolStack tool, int level, LivingEntity attacker, LivingEntity target, float damageDealt, boolean isCritical, float cooldown) {
     BlockPos attackerPos = attacker.getPosition();
     // only increase damage, decrease in applyLivingDamage
     float temperature = attacker.world.getBiome(attackerPos).getTemperature(attackerPos);
@@ -55,7 +55,7 @@ public class SearingModifier extends Modifier {
         source = DamageSource.causeMobDamage(attacker);
       }
       target.hurtResistantTime = 0;
-      attackEntitySecondary(source.setFireDamage(), temperatureBoost(temperature, level), target, false);
+      attackEntitySecondary(source.setFireDamage(), temperatureBoost(temperature, level) * cooldown, target, false);
     }
     return 0;
   }

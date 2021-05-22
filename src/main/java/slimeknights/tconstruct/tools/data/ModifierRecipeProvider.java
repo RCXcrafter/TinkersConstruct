@@ -116,11 +116,11 @@ public class ModifierRecipeProvider extends BaseRecipeProvider {
                             .build(consumer, wrap(TinkerModifiers.ancientAxeHead, folder, "_sand_cast"));
     ItemCastingRecipeBuilder.tableRecipe(TinkerModifiers.ancientHoeHead)
                             .setFluidAndTime(debris)
-                            .setCast(TinkerSmeltery.swordBladeCast.getMultiUseTag(), false)
+                            .setCast(TinkerSmeltery.smallBladeCast.getMultiUseTag(), false)
                             .build(consumer, wrap(TinkerModifiers.ancientHoeHead, folder, "_gold_cast"));
     ItemCastingRecipeBuilder.tableRecipe(TinkerModifiers.ancientHoeHead)
                             .setFluidAndTime(debris)
-                            .setCast(TinkerSmeltery.swordBladeCast.getSingleUseTag(), true)
+                            .setCast(TinkerSmeltery.smallBladeCast.getSingleUseTag(), true)
                             .build(consumer, wrap(TinkerModifiers.ancientHoeHead, folder, "_sand_cast"));
     MeltingRecipeBuilder.melting(Ingredient.fromItems(TinkerModifiers.ancientShovelHead,
                                                       TinkerModifiers.ancientAxeHead,
@@ -201,6 +201,11 @@ public class ModifierRecipeProvider extends BaseRecipeProvider {
                          .setUpgradeSlots(1)
                          .setTools(TinkerTags.Items.MELEE_OR_HARVEST)
                          .build(consumer, prefixR(TinkerModifiers.magnetic, upgradeFolder));
+    ModifierRecipeBuilder.modifier(TinkerModifiers.shiny.get())
+                         .addInput(Items.ENCHANTED_GOLDEN_APPLE)
+                         .setMaxLevel(1)
+                         .setTools(TinkerTags.Items.MODIFIABLE)
+                         .build(consumer, prefixR(TinkerModifiers.shiny, slotlessFolder));
 
     /*
      * Speed
@@ -340,6 +345,12 @@ public class ModifierRecipeProvider extends BaseRecipeProvider {
                                     .setMaxLevel(5)
                                     .setUpgradeSlots(1)
                                     .build(consumer, wrapR(TinkerModifiers.sharpness, upgradeFolder, "_from_block"));
+    IncrementalModifierRecipeBuilder.modifier(TinkerModifiers.sweeping.get())
+                                    .setTools(TinkerTags.Items.SWORD)
+                                    .setInput(Blocks.CHAIN, 1, 18) // every 9 is 11 ingots, so this is 22 ingots
+                                    .setMaxLevel(4) // goes 50%, 67%, 75%, 80%, level 5 at 83% is not really worthwhile
+                                    .setUpgradeSlots(1)
+                                    .build(consumer, prefixR(TinkerModifiers.sweeping, upgradeFolder));
 
     /*
      * ability
@@ -373,6 +384,16 @@ public class ModifierRecipeProvider extends BaseRecipeProvider {
                          .setAbilitySlots(1)
                          .setTools(TinkerTags.Items.HARVEST)
                          .build(consumer, prefixR(TinkerModifiers.silky, abilityFolder));
+    ModifierRecipeBuilder.modifier(TinkerModifiers.exchanging.get())
+                         .addInput(Items.STICKY_PISTON)
+                         .addInput(TinkerMaterials.hepatizon.getIngotTag())
+                         .addInput(Items.STICKY_PISTON)
+                         .addInput(Items.ENDER_PEARL)
+                         .addInput(Items.ENDER_PEARL)
+                         .setMaxLevel(1)
+                         .setAbilitySlots(1)
+                         .setTools(TinkerTags.Items.HARVEST)
+                         .build(consumer, prefixR(TinkerModifiers.exchanging, abilityFolder));
     ModifierRecipeBuilder.modifier(TinkerModifiers.autosmelt.get())
                          .addInput(Items.FIRE_CHARGE)
                          .addInput(TinkerWorld.congealedSlime.get(SlimeType.ICHOR))
